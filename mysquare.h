@@ -18,16 +18,17 @@ public:
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
     const static int rozmiar = 100;
     void move(int x, int y);
+    bool getPressed();
 
 protected:
     void mousePressEvent(QGraphicsSceneMouseEvent *event);
-    bool pressed;
     void checkAndMove();
     //void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
 
 private:
     int startX, startY;
     int id; //indeks w tablicy plansza oraz wyswietlana cyfra
+    static bool pressed;
 
 private slots:
     void unpress();

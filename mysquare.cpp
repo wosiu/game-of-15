@@ -1,10 +1,11 @@
 #include "mysquare.h"
 #include <QDebug>
 
+bool MySquare::pressed = false;
+
 MySquare::MySquare(int x, int y, int id, QObject *parent) :
     QObject(parent)
 {
-    pressed = false;
     this->id=id;
     this->startX = x;
     this->startY = y;
@@ -41,6 +42,11 @@ void MySquare::unpress()
     pressed = false;
 }
 
+bool MySquare::getPressed()
+{
+    return pressed;
+}
+
 /* Przesuwa square na planszy o [rozmiar]
  * move(1,0) - w prawo
  * move(-1,0) - w lewo
@@ -50,7 +56,7 @@ void MySquare::move(int x, int y)
     if ( pressed ) return;
     pressed = true;
 
-    QTimeLine *timer = new QTimeLine(500);
+    QTimeLine *timer = new QTimeLine(250);
     timer->setFrameRange(0, rozmiar);
     timer->start();
 

@@ -30,7 +30,7 @@ void MainWindow::keyPressEvent(QKeyEvent* e)
     if ( e == QKeySequence::Undo )
     {
         qDebug() <<"MainWindow: Wcisnieto kombinacje \"undo\"";
-        //plansza->undo();
+        plansza->undo();
     }
     else
         qDebug() << "MainWindow: Wcisnieto klawisz:" << e->text();

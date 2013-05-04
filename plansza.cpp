@@ -85,7 +85,7 @@ Plansza::Plansza( QGraphicsScene *scene ) :
 //cofanie ruchu
 void Plansza::undo()
 {
-    if( history.empty() ) return;
+    if( history.empty() || MySquare().getPressed() ) return;
 
     bool movecheck;
     movecheck = checkAndMove( history.back() );
