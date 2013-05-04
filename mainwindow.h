@@ -6,6 +6,10 @@
 #include <QtGui>
 #include "plansza.h"
 
+#include<QMainWindow>
+#include<QMessageBox>
+#include<QKeyEvent>
+
 namespace Ui {
 class MainWindow;
 }
@@ -18,6 +22,7 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
     QGraphicsScene *scene;
+    void keyPressEvent(QKeyEvent* e);
 
 private:
     Ui::MainWindow *ui;

@@ -16,3 +16,17 @@ MainWindow::~MainWindow()
 {
     delete ui;
 }
+
+/*void Pomoc()
+{
+    QMessageBox* box = new QMessageBox();
+    box->setWindowTitle(QString("Hello"));
+    box->setText(QString("You Pressed: ")+ e->text());
+    box->show();
+}*/
+
+void MainWindow::keyPressEvent(QKeyEvent* e)
+{
+    qDebug() << e->text();
+    if ( e == QKeySequence::Undo ) qDebug() <<"undo";
+};
