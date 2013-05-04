@@ -3,6 +3,9 @@
 
 #include <QObject>
 #include "mysquare.h"
+#include <vector>
+
+#include <QKeyEvent>
 
 class Plansza : public QObject
 {
@@ -20,13 +23,17 @@ private:
     int emptyPosition;
     void generate(int mode);
     bool checkInversions();
+    std::vector <int> history; //historia ruchow
+    bool checkAndMove( int id );
 
 signals:
     void moved(int);
 
 public slots:
+    //wykrywa klik i nakazuje przesuwania
+    //tu podpiete sygnaly ze square i klawisze
     void clickDetector(int id);
-
+    void undo();
 };
 
 #endif // PLANSZA_H

@@ -5,6 +5,7 @@
 //#include <cstdlib>      // std::rand, std::srand
 #include <algorithm>    // std::random_shuffle
 
+//sprawdza parzystosc inwersji wygenerowanej w generate()
 //Algorytm tego Pana: http://students.mimuw.edu.pl/~potato/otwarty_problem.jpg :
 bool Plansza::checkInversions()
 {
@@ -37,6 +38,7 @@ bool Plansza::checkInversions()
     return (res + 1) % 2;
 }
 
+//generuje plansze. Uzycie w konstruktorze.
 void Plansza::generate( int mode = 0 )
 {
 
@@ -52,9 +54,13 @@ void Plansza::generate( int mode = 0 )
         } while( !checkInversions() );
     }
 
+
     emptyPosition = idToPosition[ 0 ];
+
+
 }
 
+//konstruktor
 Plansza::Plansza( QGraphicsScene *scene ) :
     QObject( scene )
 {
@@ -63,7 +69,7 @@ Plansza::Plansza( QGraphicsScene *scene ) :
 
     generate();
 
-    //wypelnianie:
+    //wypelnianie square'ami:
     for ( int id = 1; id < squareNumber; id++ )
     {
         squares[id] = new MySquare( (idToPosition[id] % wymiar) * MySquare().rozmiar, //wspolrzedna x
@@ -74,13 +80,25 @@ Plansza::Plansza( QGraphicsScene *scene ) :
 
         connect( squares[id], SIGNAL( clicked(int) ), this, SLOT( clickDetector(int) ) );
     }
-    //scena->removeItem( squares[15] );
 }
 
-void Plansza::clickDetector(int id)
+//cofanie ruchu
+void Plansza::undo()
 {
-    qDebug()<<"Plansza: przechwycono klikniecie na puzel:"<<id;
+    if( history.empty() ) return;
 
+    bool movecheck;
+    movecheck = checkAndMove( history.back() );
+    history.pop_back();
+
+    if( !movecheck ) qDebug() << "Plansza: BLAD PRZY COFANIU RUCHU";
+}
+
+//wykonuje fizyczną zmiane, czesc meytoryczna w clickDetector()
+//uzuwana w clickDetector() oraz undo()
+//true - przesunieto, false - w p.p.
+bool Plansza::checkAndMove(int id)
+{
     int pos = idToPosition[id];
 
     //sprawdzam otoczenie klocka, jesli wolne, przesuwam
@@ -92,13 +110,23 @@ void Plansza::clickDetector(int id)
         squares[id]->move(0,-1);
     else if( pos + wymiar == emptyPosition )
         squares[id]->move(0,1);
-    else return;
-
-    //jesli zamieniono, to:
-    movesCounter++;
-    emit moved(movesCounter);
+    else return false;
 
     std::swap( idToPosition[id], emptyPosition  );
     qDebug()<<"Plansza: przesunieto puzel:"<<id;
+
+    return true;
+}
+
+void Plansza::clickDetector(int id)
+{
+    qDebug()<<"Plansza: przechwycono klikniecie na puzel:"<<id;
+
+    if( checkAndMove(id) )
+    {
+        movesCounter++;
+        emit moved(movesCounter);
+        history.push_back( id );
+    }
 
 }
