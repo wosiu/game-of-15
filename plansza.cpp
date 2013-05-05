@@ -101,7 +101,7 @@ void Plansza::generate( int mode )
 
                 idToPosition[ 0 ] = emptyPosition = pos;
 
-                qDebug() << "Plansza: Generuje plansze, puste na:" << pos;
+                //qDebug() << "Plansza: Generuje plansze, puste na:" << pos;
             }
         }
 

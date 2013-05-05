@@ -3,9 +3,12 @@
 
 void MainWindow::newGame( int level )
 {
-    plansza->disconnect();
-    delete plansza;
-    scene->clear();
+    if( play )
+    {
+        plansza->disconnect();
+        delete plansza;
+        scene->clear();
+    }
 
     plansza = new Plansza( scene, level );
 
@@ -14,6 +17,10 @@ void MainWindow::newGame( int level )
 
     play = true;
     ui->actionCofnij_ruch->setEnabled(true);
+    ui->actionBack->setEnabled(true);
+    ui->actionForward->setEnabled(true);
+    ui->actionStart->setEnabled(true);
+    //ui->actionStop->setEnabled(true);
 }
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -26,7 +33,11 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->graphicsView->setScene( scene );
     //ui->statusBar->showMessage("tekst");
 
-    //play = false;
+    /*plansza = new Plansza( scene, 3 );
+    connect( plansza, SIGNAL( moved(int) ), this, SLOT( showMovesCounter(int) ) );
+    showMovesCounter( 0 );*/
+
+    play = false;
 }
 
 void MainWindow::showMovesCounter( int val=0 )
