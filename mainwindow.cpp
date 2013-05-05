@@ -24,6 +24,19 @@ void MainWindow::newGame( int level )
     connect( plansza, SIGNAL(solutionForward(bool)), this, SLOT(forwardVisibility(bool)) );
 }
 
+//void MyQGraphicsView::resizeEvent(QResizeEvent *event)
+void MainWindow::resizeEvent(QResizeEvent *event)
+{
+    const qreal defaultHeight = 482;
+    const qreal defaultWidth = 422;
+
+    const qreal heighScale = event->size().height() / defaultHeight;
+    const qreal widthScale = event->size().width() / defaultWidth;
+
+    ui->graphicsView->resetTransform();
+    ui->graphicsView->scale( widthScale, heighScale );
+}
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)

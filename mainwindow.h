@@ -22,6 +22,7 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
     QGraphicsScene *scene;
+    void resizeEvent( QResizeEvent *event );
 
 protected:
     void keyPressEvent(QKeyEvent* e);
