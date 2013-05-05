@@ -31,7 +31,9 @@ private:
     Plansza *plansza;
     QLabel *licznik;
     void newGame( int level );
-    bool play;
+    bool play; //czy trwa rozgrywka
+    void showSolution(); //pokazywanie rozwiazania
+    bool run; //czy pokazywanie rozwiazania trwa
 
 public slots:
     void showMovesCounter( int );
@@ -43,6 +45,14 @@ private slots:
     void on_actionHardcore_triggered();
     void on_actionCofnij_ruch_triggered();
     void on_actionZamknij_triggered();
+    void on_actionAutor_triggered();
+    void on_actionBack_triggered();
+    void on_actionForward_triggered();
+    void backVisibility( bool b );
+    void forwardVisibility( bool b );
+    void on_actionSkroty_klawiszowe_triggered();
+    void on_actionStart_triggered();
+    void on_actionStop_triggered();
 };
 
 #endif // MAINWINDOW_H

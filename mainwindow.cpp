@@ -18,9 +18,10 @@ void MainWindow::newGame( int level )
     play = true;
     ui->actionCofnij_ruch->setEnabled(true);
     ui->actionBack->setEnabled(true);
-    ui->actionForward->setEnabled(true);
     ui->actionStart->setEnabled(true);
-    //ui->actionStop->setEnabled(true);
+    ui->actionForward->setEnabled(false);
+    connect( plansza, SIGNAL(solutionBack(bool)), this, SLOT(backVisibility(bool)) );
+    connect( plansza, SIGNAL(solutionForward(bool)), this, SLOT(forwardVisibility(bool)) );
 }
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -37,6 +38,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->statusBar->addWidget( licznik );
 
     play = false;
+    run = true;
 }
 
 void MainWindow::showMovesCounter( int val=0 )
@@ -45,7 +47,6 @@ void MainWindow::showMovesCounter( int val=0 )
     //ui->statusBar->showMessage( "Ilość ruchów: " + QString::number( val ) );
 }
 
-//TO DO: show level
 
 MainWindow::~MainWindow()
 {
@@ -53,24 +54,11 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-/*void Pomoc()
-{
-    QMessageBox* box = new QMessageBox();
-    box->setWindowTitle(QString("Hello"));
-    box->setText(QString("You Pressed: ")+ e->text());
-    box->show();
-}*/
 
-/* TO DO:
- *QKeySequence::New
- */
 void MainWindow::keyPressEvent(QKeyEvent* e)
 {
     qDebug() << "MainWindow: Wcisnieto klawisz:" << e->text();
 
-    //else if( e->key() == Qt::DownArrow )
-    //else if( e == QKeySequence::MoveToNextLine )
-    //else if( e->key() == Qt::Key_Down )
     if( e->key() == Qt::Key_S )
         plansza->moveToEmptyFromSide( 0, -1 );
     else if( e->key() == Qt::Key_W )
@@ -83,7 +71,8 @@ void MainWindow::keyPressEvent(QKeyEvent* e)
 };
 
 
-//OBSŁUGA MENU:
+/* O B S Ł U G A    M E N U : */
+
 void MainWindow::on_actionLatwa_triggered()
 {
     newGame(1);
@@ -113,4 +102,77 @@ void MainWindow::on_actionCofnij_ruch_triggered()
 void MainWindow::on_actionZamknij_triggered()
 {
     qApp->quit();
+}
+
+void MainWindow::on_actionAutor_triggered()
+{
+    QMessageBox* box = new QMessageBox(this);
+    box->setWindowTitle(QString("Autor"));
+    box->setText(QString(
+                     "Michał Woś\nmw336071@students.mimuw.edu.pl"));
+    box->setButtonText(1,"Zamknij");
+    box->show();
+}
+
+void MainWindow::on_actionBack_triggered()
+{
+    plansza->showSolutionBack();
+}
+
+void MainWindow::on_actionForward_triggered()
+{
+    plansza->showSolutionForward();
+}
+
+void MainWindow::backVisibility( bool b)
+{
+    run = b;
+    ui->actionBack->setEnabled( b );
+    ui->actionStart->setEnabled( b );
+
+    if( b == false ) ui->actionStart->setEnabled( b );
+}
+
+void MainWindow::forwardVisibility( bool b )
+{
+    ui->actionForward->setEnabled( b );
+}
+
+void MainWindow::showSolution()
+{
+    //while( run )
+    {
+        QPauseAnimation(100);
+        on_actionBack_triggered();
+    }
+}
+
+void MainWindow::on_actionStart_triggered()
+{
+    run = true;
+    ui->actionStart->setEnabled( false );
+    ui->actionStop->setEnabled( true );
+    showSolution();
+}
+
+void MainWindow::on_actionStop_triggered()
+{
+   run = false;
+   ui->actionStart->setEnabled( true );
+   ui->actionStop->setEnabled( false );
+}
+
+void MainWindow::on_actionSkroty_klawiszowe_triggered()
+{
+    QMessageBox* box = new QMessageBox(this);
+    box->setWindowTitle(QString("Dodatowe skróty klawiszowe"));
+    QString tekst = "<h3>Poruszanie klockami sąsiednimi do wolnego pola:</h3>";
+    tekst += "W - dolnym, ";
+    tekst += "S - górnym, ";
+    tekst += "A - lewym, ";
+    tekst += "D - prawym.";
+
+    box->setText( tekst );
+    box->setButtonText(1,"Zamknij");
+    box->show();
 }

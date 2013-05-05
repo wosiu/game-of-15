@@ -13,6 +13,8 @@ class Plansza : public QObject
 public:
     Plansza(QGraphicsScene *scene = 0 , int generateMode = 3 );
     void moveToEmptyFromSide( int x, int y );
+    bool showSolutionBack();
+    bool showSolutionForward();
 
 private:
     QGraphicsScene *scena;
@@ -36,14 +38,15 @@ private:
 
 signals:
     void moved( int );
+    //disabled'owanie przyciskow w mainwindow:
+    void solutionForward( bool );
+    void solutionBack( bool );
 
 public slots:
     //wykrywa klik i nakazuje przesuwania
     //tu podpiete sygnaly ze square i klawisze
     void clickDetector( int id );
     void undo();
-    bool showSolutionBack();
-    bool showSolutionForward();
 };
 
 #endif // PLANSZA_H

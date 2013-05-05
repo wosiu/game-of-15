@@ -189,6 +189,8 @@ void Plansza::clickDetector( int id )
     {
         movesCounter++;
         emit moved( movesCounter );
+        emit solutionBack( true );
+        emit solutionForward( false );
         history.push_back( id );
     }
 
@@ -240,6 +242,8 @@ bool Plansza::showSolutionBack()
         //czyszczę historię
         history.clear();
         solutionIter = solution.size()-1;
+
+        emit solutionForward( false );
     }
 
     if ( solutionIter == -1 ) return false; //koniec rozwiazania
@@ -247,8 +251,13 @@ bool Plansza::showSolutionBack()
     //(*) checkAndMove w if'ie, żeby nie zmniejszał solutionIter,
     //gdy nie wykonano ruchu, z powodu nie skonczonej poprzedniej akcji na scenie
     if ( checkAndMove( solution[ solutionIter ] ) )
+    {
         solutionIter--;
+        emit solutionForward( true );
 
+        if( solutionIter == -1 )
+            emit solutionBack( false );
+    }
     return true;
 }
 
@@ -257,7 +266,14 @@ bool Plansza::showSolutionForward()
     if ( solutionIter >= (int)solution.size() - 1 ) return false; //nie ma co pokazywac
 
     if ( checkAndMove( solution[ solutionIter + 1 ] ) )
+    {
         solutionIter++;
+        emit solutionBack( true );
+    }
+
+    if ( solutionIter >= (int)solution.size() - 1 )
+        emit solutionForward( false );
 
     return true;
 }
+
