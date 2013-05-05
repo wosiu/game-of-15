@@ -29,6 +29,9 @@ protected:
 private:
     Ui::MainWindow *ui;
     Plansza *plansza;
+
+public slots:
+    void showMovesCounter( int );
 };
 
 #endif // MAINWINDOW_H

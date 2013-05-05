@@ -11,10 +11,13 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->graphicsView->setScene(scene);
     plansza = new Plansza( scene );
 
-    /*cLabel *Label = new cLabel(this);
-    Label->setFocusPolicy(Qt::TabFocus);
-    Label->GetText();*/
-    this->setFocusPolicy ( Qt::StrongFocus );
+    connect( plansza, SIGNAL( moved(int) ), this, SLOT( showMovesCounter(int) ) );
+    showMovesCounter( 0 );
+}
+
+void MainWindow::showMovesCounter( int val=0 )
+{
+    ui->statusBar->showMessage( "Ilość ruchów: " + QString::number( val ) );
 }
 
 MainWindow::~MainWindow()

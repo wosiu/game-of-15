@@ -31,9 +31,9 @@ void MySquare::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
     //painter->drawText(rec,xStr + " " + yStr);
 
     QFont font = painter->font();
-    font.setPointSize(30);
-    font.setBold(true);
-    painter->setFont(font);
+    font.setPointSize( 30 );
+    font.setBold( true );
+    painter->setFont( font );
     painter->drawText( rec, Qt::AlignCenter, QString::number( id  ) );
 }
 
