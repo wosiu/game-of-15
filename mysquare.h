@@ -15,7 +15,8 @@ public:
     MySquare(int x, int y, int id, QObject *parent);
     MySquare();
     QRectF boundingRect() const;
-    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
+    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
+               QWidget *widget);
     const static int rozmiar = 100;
     void move(int x, int y);
     bool getPressed();

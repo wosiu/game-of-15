@@ -13,6 +13,14 @@ MainWindow::MainWindow(QWidget *parent) :
 
     connect( plansza, SIGNAL( moved(int) ), this, SLOT( showMovesCounter(int) ) );
     showMovesCounter( 0 );
+
+
+    /*std::vector<int> chuj;
+    for(int i=0; i<10;i++) chuj.push_back(i);
+    std::vector<int>* kurwa = &chuj;
+    kurwa->pop_back();
+    qDebug() << "SIZE: " << chuj.size();
+    */
 }
 
 void MainWindow::showMovesCounter( int val=0 )

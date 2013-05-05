@@ -18,7 +18,8 @@ QRectF MySquare::boundingRect() const
     return QRectF(startX,startY,rozmiar,rozmiar);
 }
 
-void MySquare::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
+void MySquare::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
+                     QWidget *widget)
 {
     QRectF rec = boundingRect();
     QBrush brush(Qt::green);

@@ -11,7 +11,7 @@ class Plansza : public QObject
 {
     Q_OBJECT
 public:
-    Plansza( QGraphicsScene *scene = 0 );
+    Plansza(QGraphicsScene *scene = 0 , int generateMode = 3 );
     void moveToEmptyFromSide( int x, int y );
 
 private:
@@ -28,7 +28,11 @@ private:
     void generate( int mode );
     bool checkInversions();
     std::vector <int> history; //historia ruchow
+    std::vector <int> solution;
+    bool isSolution;
+    int solutionIter;
     bool checkAndMove( int id );
+
 
 signals:
     void moved( int );
@@ -38,6 +42,8 @@ public slots:
     //tu podpiete sygnaly ze square i klawisze
     void clickDetector( int id );
     void undo();
+    bool showSolutionBack();
+    bool showSolutionForward();
 };
 
 #endif // PLANSZA_H
