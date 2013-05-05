@@ -17,7 +17,7 @@ public:
     QRectF boundingRect() const;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
                QWidget *widget);
-    const static int rozmiar = 100;
+    static const int rozmiar;
     void move(int x, int y);
     bool getPressed();
 

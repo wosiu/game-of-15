@@ -1,6 +1,7 @@
 #include "mysquare.h"
 #include <QDebug>
 
+const int MySquare::rozmiar = 100;
 bool MySquare::pressed = false;
 
 MySquare::MySquare(int x, int y, int id, QObject *parent) :
