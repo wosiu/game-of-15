@@ -31,24 +31,25 @@ MainWindow::MainWindow(QWidget *parent) :
 
     scene = new QGraphicsScene(this);
     ui->graphicsView->setScene( scene );
-    //ui->statusBar->showMessage("tekst");
 
-    /*plansza = new Plansza( scene, 3 );
-    connect( plansza, SIGNAL( moved(int) ), this, SLOT( showMovesCounter(int) ) );
-    showMovesCounter( 0 );*/
+    licznik = new QLabel();
+    licznik->setIndent(10);
+    ui->statusBar->addWidget( licznik );
 
     play = false;
 }
 
 void MainWindow::showMovesCounter( int val=0 )
 {
-    ui->statusBar->showMessage( "Ilość ruchów: " + QString::number( val ) );
+    licznik->setText( "Ilość ruchów: " + QString::number( val ) );
+    //ui->statusBar->showMessage( "Ilość ruchów: " + QString::number( val ) );
 }
 
 //TO DO: show level
 
 MainWindow::~MainWindow()
 {
+    delete licznik;
     delete ui;
 }
 
@@ -107,4 +108,9 @@ void MainWindow::on_actionCofnij_ruch_triggered()
 {
     if ( play )
       plansza->undo();
+}
+
+void MainWindow::on_actionZamknij_triggered()
+{
+    qApp->quit();
 }

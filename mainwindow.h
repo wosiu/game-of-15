@@ -29,6 +29,7 @@ protected:
 private:
     Ui::MainWindow *ui;
     Plansza *plansza;
+    QLabel *licznik;
     void newGame( int level );
     bool play;
 
@@ -41,6 +42,7 @@ private slots:
     void on_actionTrudna_triggered();
     void on_actionHardcore_triggered();
     void on_actionCofnij_ruch_triggered();
+    void on_actionZamknij_triggered();
 };
 
 #endif // MAINWINDOW_H
