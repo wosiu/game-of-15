@@ -12,6 +12,7 @@ class Plansza : public QObject
     Q_OBJECT
 public:
     Plansza( QGraphicsScene *scene = 0 );
+    void moveToEmptyFromSide( int x, int y );
 
 private:
     QGraphicsScene *scena;
@@ -20,19 +21,22 @@ private:
     int movesCounter;
     MySquare* squares[ squareNumber ]; //plansza 4 na 4
     int idToPosition[ squareNumber ];
+    int positionToId[ squareNumber ];
+    int posX( int pos );
+    int posY( int pos );
     int emptyPosition;
-    void generate(int mode);
+    void generate( int mode );
     bool checkInversions();
     std::vector <int> history; //historia ruchow
     bool checkAndMove( int id );
 
 signals:
-    void moved(int);
+    void moved( int );
 
 public slots:
     //wykrywa klik i nakazuje przesuwania
     //tu podpiete sygnaly ze square i klawisze
-    void clickDetector(int id);
+    void clickDetector( int id );
     void undo();
 };
 

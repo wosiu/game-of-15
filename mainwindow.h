@@ -22,6 +22,8 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
     QGraphicsScene *scene;
+
+protected:
     void keyPressEvent(QKeyEvent* e);
 
 private:

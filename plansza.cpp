@@ -1,8 +1,6 @@
 #include "plansza.h"
 #include "mysquare.h"
 #include <QDebug>
-//#include <ctime>        // std::time
-//#include <cstdlib>      // std::rand, std::srand
 #include <algorithm>    // std::random_shuffle
 
 //sprawdza parzystosc inwersji wygenerowanej w generate()
@@ -42,8 +40,8 @@ bool Plansza::checkInversions()
 void Plansza::generate( int mode = 0 )
 {
 
-    for ( int id = 0; id < squareNumber; id++ )
-        idToPosition[id] = id;
+    for ( int _id = 0; _id < squareNumber; _id++ )
+        idToPosition[_id] = _id;
 
     //poziom trudnosci:
     if ( mode == 0 ) //kompletny rand
@@ -54,6 +52,8 @@ void Plansza::generate( int mode = 0 )
         } while( !checkInversions() );
     }
 
+    for ( int _id = 0; _id < squareNumber; _id++ )
+        positionToId[ idToPosition[_id] ] = _id;
 
     emptyPosition = idToPosition[ 0 ];
 
@@ -82,51 +82,79 @@ Plansza::Plansza( QGraphicsScene *scene ) :
     }
 }
 
-//cofanie ruchu
-void Plansza::undo()
+//daje wspolrzedne danej pozycji:
+int Plansza::posX( int pos )
 {
-    if( history.empty() || MySquare().getPressed() ) return;
-
-    bool movecheck;
-    movecheck = checkAndMove( history.back() );
-    history.pop_back();
-
-    if( !movecheck ) qDebug() << "Plansza: BLAD PRZY COFANIU RUCHU";
+    return pos % wymiar;
+}
+int Plansza::posY( int pos )
+{
+    return pos / wymiar;
 }
 
-//wykonuje fizyczną zmiane, czesc meytoryczna w clickDetector()
-//uzuwana w clickDetector() oraz undo()
-//true - przesunieto, false - w p.p.
-bool Plansza::checkAndMove(int id)
+//sprawdza (czy wszystkie operacje na planszy zostały skończone
+//oraz czy klocek  o [id] ma w BEZPOŚREDNIM sasiedztwie empty)
+//i fizycznie wykonuje ruch
+//uzuwana w clickDetector(), undo(), moveToEmptyFromSide
+//zwraca: true - przesunieto / false - w p.p.
+bool Plansza::checkAndMove( int id )
 {
+    if ( MySquare().getPressed() ) return false; //w trakcie przesuwania
+
     int pos = idToPosition[id];
 
     //sprawdzam otoczenie klocka, jesli wolne, przesuwam
-    if( pos + 1 == emptyPosition )
+    if( posX( pos ) < wymiar - 1  &&  pos + 1 == emptyPosition )
         squares[id]->move(1,0);
-    else if( pos - 1 == emptyPosition )
+    else if( posX( pos ) > 0  &&  pos - 1 == emptyPosition )
         squares[id]->move(-1,0);
-    else if( pos - wymiar == emptyPosition )
+    else if( posY( pos ) > 0  &&  pos - wymiar == emptyPosition )
         squares[id]->move(0,-1);
-    else if( pos + wymiar == emptyPosition )
+    else if( posY( pos ) < wymiar - 1  &&  pos + wymiar == emptyPosition )
         squares[id]->move(0,1);
     else return false;
 
+    std::swap( positionToId[pos], positionToId[ emptyPosition ] ); //positionToId[ emptyPosition ] = 0
     std::swap( idToPosition[id], emptyPosition  );
+
     qDebug()<<"Plansza: przesunieto puzel:"<<id;
 
     return true;
 }
 
-void Plansza::clickDetector(int id)
+void Plansza::clickDetector( int id )
 {
     qDebug()<<"Plansza: przechwycono klikniecie na puzel:"<<id;
 
     if( checkAndMove(id) )
     {
         movesCounter++;
-        emit moved(movesCounter);
+        emit moved( movesCounter );
         history.push_back( id );
     }
 
+}
+
+// klawiszo obsluga:
+
+//cofanie ruchu
+void Plansza::undo()
+{
+    if( !history.empty() && checkAndMove( history.back() ) )
+        history.pop_back();
+}
+
+
+//przesuwa klocek znajdujacy sie na (x,y) od pustego miejsca
+void Plansza::moveToEmptyFromSide( int x, int y )
+{
+    int X = emptyPosition % wymiar + x;
+    int Y = emptyPosition / wymiar + y;
+    int pos = X + Y * wymiar;
+
+    //wywołanie spoza planszy:
+    if ( X < 0 || X >= wymiar || Y < 0 || Y >= wymiar /*|| pos <= 0 || pos >= squareNumber*/ ) return;
+
+    //imituje klikniecie:
+    clickDetector( positionToId[ pos ] );
 }
