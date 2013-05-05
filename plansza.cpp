@@ -39,7 +39,7 @@ bool Plansza::checkInversions()
 
 
 //generuje plansze. Uzycie w konstruktorze.
-void Plansza::generate( int mode = 3 )
+void Plansza::generate( int mode )
 {
 
     for ( int _id = 0; _id < squareNumber; _id++ )
@@ -101,7 +101,7 @@ void Plansza::generate( int mode = 3 )
 
                 idToPosition[ 0 ] = emptyPosition = pos;
 
-                qDebug() << pos;
+                qDebug() << "Plansza: Generuje plansze, puste na:" << pos;
             }
         }
 
@@ -119,7 +119,6 @@ Plansza::Plansza( QGraphicsScene *scene, int generateMode ) :
     movesCounter = 0;
     isSolution = false;
 
-    generateMode = 1;
     generate( generateMode );
 
     //wypelnianie square'ami:

@@ -17,7 +17,7 @@ class MainWindow;
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
-    
+
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
@@ -29,9 +29,18 @@ protected:
 private:
     Ui::MainWindow *ui;
     Plansza *plansza;
+    void newGame( int level );
+    bool play;
 
 public slots:
     void showMovesCounter( int );
+
+private slots:
+    void on_actionLatwa_triggered();
+    void on_actionNormalna_triggered();
+    void on_actionTrudna_triggered();
+    void on_actionHardcore_triggered();
+    void on_actionCofnij_ruch_triggered();
 };
 
 #endif // MAINWINDOW_H
