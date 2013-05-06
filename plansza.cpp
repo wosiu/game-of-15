@@ -120,6 +120,7 @@ Plansza::Plansza( QGraphicsScene *scene, int generateMode ) :
     scena = scene;
     movesCounter = 0;
     isSolution = false;
+    solutionRunning = false;
 
     generate( generateMode );
 
