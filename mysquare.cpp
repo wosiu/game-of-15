@@ -50,6 +50,12 @@ bool MySquare::getPressed()
     return pressed;
 }
 
+//blokowanie bo znalezieniu rozwiazania
+//void MySquare::block()
+//{
+//    pressed = true;
+//}
+
 /* Przesuwa square na planszy o [rozmiar]
  * move(1,0) - w prawo
  * move(-1,0) - w lewo

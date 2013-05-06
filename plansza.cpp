@@ -107,7 +107,6 @@ void Plansza::generate( int mode )
             }
         }
 
-        isSolution = true;
         solutionIter = solution.size() - 1;
     }
 }
@@ -119,7 +118,7 @@ Plansza::Plansza( QGraphicsScene *scene, int generateMode ) :
 {
     scena = scene;
     movesCounter = 0;
-    isSolution = false;
+    solutionIter = -1;
     solutionRunning = false;
 
     generate( generateMode );
@@ -183,8 +182,11 @@ bool Plansza::checkAndMove( int id )
     //(*) positionToId[ emptyPosition ] = 0
     std::swap( positionToId[pos], positionToId[ emptyPosition ] );
     std::swap( idToPosition[id], emptyPosition  );
+    idToPosition[ 0 ] = emptyPosition;
 
     qDebug()<<"Plansza: przesunieto puzel:"<<id;
+
+    finishChecking();
 
     return true;
 }
@@ -226,13 +228,25 @@ void Plansza::moveToEmptyFromSide( int x, int y )
 //cofanie ruchu
 void Plansza::undo()
 {
-    if( !history.empty() && checkAndMove( history.back() ) )
+    if ( !history.empty() && checkAndMove( history.back() ) )
     {
         qDebug() << "Plansza: undo()";
         history.pop_back();
     }
 }
 
+void Plansza::finishChecking()
+{
+    //qDebug() << "finishChecking(): sprawdzam czy rozwiązano.";
+
+    for ( int i = 0; i < squareNumber; i++ )
+        if( idToPosition[i] != i )
+            return;
+
+    qDebug() << "finishChecking(): ROZWIĄZANO1!";
+
+    //solutionRunning = false;
+}
 
 /* S H O W   S O L U T I O N : */
 
@@ -270,7 +284,11 @@ bool Plansza::showSolutionBack()
         emit solutionForward( false );
     }
 
-    if ( solutionIter == -1 ) return false; //koniec rozwiazania
+    if ( solutionIter == -1 )
+    {
+        setSolutionRunning( false );
+        return false; //koniec rozwiazania
+    }
 
     //(*) checkAndMove w if'ie, żeby nie zmniejszał solutionIter,
     //gdy nie wykonano ruchu, z powodu nie skonczonej poprzedniej akcji na scenie

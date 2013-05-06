@@ -169,10 +169,19 @@ void MainWindow::on_actionSkroty_klawiszowe_triggered()
     QMessageBox* box = new QMessageBox(this);
     box->setWindowTitle(QString("Dodatowe skróty klawiszowe"));
     QString tekst = "<h3>Poruszanie klockami sąsiednimi do wolnego pola:</h3>";
-    tekst += "W - dolnym, ";
-    tekst += "S - górnym, ";
-    tekst += "A - lewym, ";
-    tekst += "D - prawym.";
+    tekst += "W - dolnym<br> ";
+    tekst += "S - górnym<br> ";
+    tekst += "A - lewym<br> ";
+    tekst += "D - prawym<br>";
+    tekst += "Ctrl + Z - cofnij wykonany ruch.<br>";
+
+    tekst += "<h3>Pokazywanie rozwiązania:</h3>";
+    tekst += "Strzałka w lewo - pokazuje jeden krok rozwiązania.<br>";
+    tekst += "Strzałka w prawo - cofa jeden krok rozwiązania.<br>";
+    tekst += "Spacja - Start / Stop animacji pokazującej całe rozwiązanie<br><br>";
+    tekst += "Po zatrzymaniu animacji z rozwiązaniem, można kontynuować grę od obecnego momentu.<br>";
+
+    tekst += "<h3>Ułożyć puzle tak, aby w pierwszym polu znajdował się pusty puzel, kolejne rosnąco.</h3>";
 
     box->setText( tekst );
     box->setButtonText(1,"Zamknij");

@@ -20,6 +20,8 @@ public:
     static const int rozmiar;
     void move(int x, int y);
     bool getPressed();
+    //void block(); //jesli wygrana
+    static bool pressed;
 
 protected:
     void mousePressEvent(QGraphicsSceneMouseEvent *event);
@@ -29,7 +31,7 @@ protected:
 private:
     int startX, startY;
     int id; //indeks w tablicy plansza oraz wyswietlana cyfra
-    static bool pressed;
+
 
 private slots:
     void unpress();

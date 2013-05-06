@@ -32,10 +32,10 @@ private:
     bool checkInversions();
     std::vector <int> history; //historia ruchow
     std::vector <int> solution;
-    bool isSolution;
     int solutionIter;
     bool checkAndMove( int id );
     bool solutionRunning;
+    void finishChecking();
 
 
 signals:
