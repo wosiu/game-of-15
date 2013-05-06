@@ -36,6 +36,7 @@ private slots:
 
 signals:
     void clicked(int clickedId);
+    void animationFinished();
 };
 
 #endif // MYSQUARE_H

@@ -15,6 +15,7 @@ public:
     void moveToEmptyFromSide( int x, int y );
     bool showSolutionBack();
     bool showSolutionForward();
+    void setSolutionRunning( bool v );
 
 private:
     QGraphicsScene *scena;
@@ -34,6 +35,7 @@ private:
     bool isSolution;
     int solutionIter;
     bool checkAndMove( int id );
+    bool solutionRunning;
 
 
 signals:
@@ -47,6 +49,7 @@ public slots:
     //tu podpiete sygnaly ze square i klawisze
     void clickDetector( int id );
     void undo();
+    void showSolution();
 };
 
 #endif // PLANSZA_H

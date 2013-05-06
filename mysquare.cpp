@@ -42,6 +42,7 @@ void MySquare::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
 void MySquare::unpress()
 {
     pressed = false;
+    emit animationFinished();
 }
 
 bool MySquare::getPressed()

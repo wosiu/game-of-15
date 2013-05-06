@@ -33,8 +33,6 @@ private:
     QLabel *licznik;
     void newGame( int level );
     bool play; //czy trwa rozgrywka
-    void showSolution(); //pokazywanie rozwiazania
-    bool run; //czy pokazywanie rozwiazania trwa
 
 public slots:
     void showMovesCounter( int );

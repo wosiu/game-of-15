@@ -51,7 +51,6 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->statusBar->addWidget( licznik );
 
     play = false;
-    run = true;
 }
 
 void MainWindow::showMovesCounter( int val=0 )
@@ -137,42 +136,32 @@ void MainWindow::on_actionForward_triggered()
     plansza->showSolutionForward();
 }
 
+void MainWindow::on_actionStart_triggered()
+{
+    ui->actionStart->setEnabled( false );
+    ui->actionStop->setEnabled( true );
+    plansza->setSolutionRunning( true );
+}
+
+
+void MainWindow::on_actionStop_triggered()
+{
+    ui->actionStart->setEnabled( true );
+    ui->actionStop->setEnabled( false );
+    plansza->setSolutionRunning( false );
+}
+
 void MainWindow::backVisibility( bool b)
 {
-    run = b;
     ui->actionBack->setEnabled( b );
     ui->actionStart->setEnabled( b );
 
-    if( b == false ) ui->actionStart->setEnabled( b );
+    if( b == false ) ui->actionStop->setEnabled( b );
 }
 
 void MainWindow::forwardVisibility( bool b )
 {
     ui->actionForward->setEnabled( b );
-}
-
-void MainWindow::showSolution()
-{
-    //while( run )
-    {
-        QPauseAnimation(100);
-        on_actionBack_triggered();
-    }
-}
-
-void MainWindow::on_actionStart_triggered()
-{
-    run = true;
-    ui->actionStart->setEnabled( false );
-    ui->actionStop->setEnabled( true );
-    showSolution();
-}
-
-void MainWindow::on_actionStop_triggered()
-{
-   run = false;
-   ui->actionStart->setEnabled( true );
-   ui->actionStop->setEnabled( false );
 }
 
 void MainWindow::on_actionSkroty_klawiszowe_triggered()

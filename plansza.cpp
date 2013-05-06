@@ -4,6 +4,8 @@
 #include <algorithm>    // std::random_shuffle
 #include <QTime>
 
+/* G E N E R O W A N I E  P L A N S Z Y : */
+
 //sprawdza parzystosc inwersji wygenerowanej w generate()
 //Algorytm tego Pana: http://students.mimuw.edu.pl/~potato/otwarty_problem.jpg :
 bool Plansza::checkInversions()
@@ -131,11 +133,19 @@ Plansza::Plansza( QGraphicsScene *scene, int generateMode ) :
 
         scena->addItem( squares[id] );
 
+        //sygnał o kliknieciu na square
         connect( squares[id], SIGNAL( clicked(int) ),
                  this, SLOT( clickDetector(int) ) );
+
+        //sygnał o zakonczonej animacji do showSolution,
+        //w celu wywołania kolejnego ruchu
+        connect( squares[id], SIGNAL( animationFinished() ), this,
+                 SLOT(showSolution()) );
     }
 }
 
+
+/* P R Z E S U W A N I E  P U Z L I  N A  P L A N S Z Y : */
 
 //daje wspolrzedne danej pozycji:
 int Plansza::posX( int pos )
@@ -146,7 +156,6 @@ int Plansza::posY( int pos )
 {
     return pos / wymiar;
 }
-
 
 //Sprawdza (czy wszystkie operacje na planszy zostały skończone
 //oraz czy puzel o [id] ma w BEZPOŚREDNIM sasiedztwie empty)
@@ -224,7 +233,21 @@ void Plansza::undo()
 }
 
 
-// S H O W   S O L U T I O N:
+/* S H O W   S O L U T I O N : */
+
+void Plansza::setSolutionRunning( bool v )
+{
+    solutionRunning = v;
+    if ( v )
+        showSolution();
+}
+
+void Plansza::showSolution()
+{
+    if ( solutionRunning )
+        showSolutionBack();
+}
+
 bool Plansza::showSolutionBack()
 {
     //if ( ! isSolution ) return; //TO DO: computing dla randoma
@@ -256,7 +279,10 @@ bool Plansza::showSolutionBack()
         emit solutionForward( true );
 
         if( solutionIter == -1 )
+        {
+            setSolutionRunning( false );
             emit solutionBack( false );
+        }
     }
     return true;
 }
